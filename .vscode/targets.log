@@ -1,0 +1,525 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# This program built for i386-apple-darwin11.3.0
+ 
+
+# Make data base, printed on Mon Jun  6 10:35:38 2022
+
+# Variables
+
+# environment
+VSCODE_GIT_ASKPASS_MAIN = /Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# environment
+VSCODE_LOG_NATIVE = false
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# makefile
+CURDIR := /Users/sgryczan/repos/sgryczan/route53-hosted-zone-controller
+# makefile (from `Makefile', line 28)
+SHELL = /usr/bin/env bash -o pipefail
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+_ = /usr/bin/make
+# environment
+SAVEHIST = 1000000000
+# makefile (from `Makefile', line 126)
+LOCALBIN = $(shell pwd)/bin
+# makefile (from `Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# makefile (from `Makefile', line 8)
+VERSION = $(shell git describe --tags)
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+__CFBundleIdentifier = com.microsoft.VSCode
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/88/nnj2_5s543j9zkb27pkl9r9r0000gn/T/vscode-ipc-c9aab4f8-7b6e-49a0-8003-bd8432c55441.sock
+# environment
+VSCODE_CWD = /Users/sgryczan/repos/sgryczan/route53-hosted-zone-controller
+# environment
+GOPROXY = https://proxy.golang.org,direct
+# environment
+PATH = /usr/local/opt/openssl@3/bin:/opt/chefdk/bin:/Users/sgryczan/.chefdk/gem/ruby/2.3.0/bin:/opt/chefdk/embedded/bin:/Users/sgryczan/Downloads/google-cloud-sdk/bin:/Users/sgryczan/.krew/bin:/usr/local/go/bin:/Users/sgryczan/go/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/opt/X11/bin:/Users/sgryczan/Downloads/google-cloud-sdk/bin:/Users/sgryczan/.krew/bin:/Users/sgryczan/go/bin:/usr/local/opt/fzf/bin:/Users/sgryczan/.gem/ruby/2.6.0/bin:/Users/sgryczan/Library/Python/2.7/bin:/Users/sgryczan/code/owl/bin:/Users/sgryczan/.gem/ruby/2.6.0/bin:/Users/sgryczan/Library/Python/2.7/bin:/Users/sgryczan/code/owl/bin:/opt/chefdk/gitbin
+# makefile (from `Makefile', line 139)
+KUSTOMIZE_INSTALL_SCRIPT = "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"
+# environment
+LSCOLORS = Gxfxcxdxbxegedabagacad
+# environment
+VSCODE_IPC_HOOK = /Users/sgryczan/Library/Application Support/Code/1.67.2-main.sock
+# makefile (from `Makefile', line 16)
+KIND_CLUSTER_NAME = r53-hz-controller
+# environment
+GOPATH = /Users/sgryczan/go
+# environment
+VSCODE_LOG_STACK = false
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
+# makefile (from `Makefile', line 11)
+TAG = latest
+# makefile (from `Makefile', line 132)
+CONTROLLER_GEN = $(LOCALBIN)/controller-gen
+# environment
+HOMEBREW_GITHUB_API_TOKEN = ea8a06443a7e993bccb4e8e728a231aa87b3090c
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.yuaJPjbXVM/Listeners
+# automatic
+%F = $(notdir $%)
+# makefile (from `Makefile', line 20)
+GOBIN = $(shell go env GOPATH)/bin
+# environment
+DISPLAY = /private/tmp/com.apple.launchd.3XtOGuiHtv/org.macosforge.xquartz:0
+# makefile (from `Makefile', line 10)
+IMAGE = sgryczan/r53-hz-controller
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+PWD = /Users/sgryczan/repos/sgryczan/route53-hosted-zone-controller
+# environment
+GEM_HOME = /Users/sgryczan/.chefdk/gem/ruby/2.3.0
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# environment
+GOMODCACHE = /Users/sgryczan/go/pkg/mod
+# environment
+HOME = /Users/sgryczan
+# default
+MAKEFILEPATH = $(shell /usr/bin/xcode-select -print-path 2>/dev/null || echo /Developer)/Makefiles
+# environment
+VSCODE_CLI = 1
+# environment
+VSCODE_CODE_CACHE_PATH = /Users/sgryczan/Library/Application Support/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+# environment
+LOGNAME = sgryczan
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# makefile (from `Makefile', line 9)
+REGISTRY = docker.io
+# environment
+ZSH = /Users/sgryczan/.oh-my-zsh
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+MAKELEVEL := 0
+# environment
+GEM_PATH = /Users/sgryczan/.chefdk/gem/ruby/2.3.0:/opt/chefdk/embedded/lib/ruby/gems/2.3.0
+# environment
+XPC_FLAGS = 0x0
+# environment
+COLORTERM = truecolor
+# makefile (from `Makefile', line 15)
+ 
+CRD_OPTIONS = "crd:trivialVersions=true,preserveUnknownFields=false"
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 3
+# default
+MAKE_VERSION := 3.81
+# environment
+USER = sgryczan
+# makefile
+.DEFAULT_GOAL := all
+# environment
+LESS = -R
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# default
+MAKE_COMMAND := /Library/Developer/CommandLineTools/usr/bin/make
+# environment
+VSCODE_GIT_ASKPASS_EXTRA_ARGS = --ms-enable-electron-run-as-node
+# makefile (from `Makefile', line 131)
+KUSTOMIZE = $(LOCALBIN)/kustomize
+# environment
+TERM_PROGRAM = vscode
+# default
+.VARIABLES := 
+# environment
+TMPDIR = /var/folders/88/nnj2_5s543j9zkb27pkl9r9r0000gn/T/
+# automatic
+*F = $(notdir $*)
+# makefile (from `Makefile', line 3)
+IMG = controller:latest
+# environment
+AWS_SESSION_TTL = 12h
+# environment
+VSCODE_GIT_ASKPASS_NODE = /Applications/Visual Studio Code.app/Contents/MacOS/Electron
+# makefile (from `Makefile', line 137)
+CONTROLLER_TOOLS_VERSION = v0.8.0
+# makefile (from `Makefile', line 136)
+KUSTOMIZE_VERSION = v3.8.7
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+TERM_PROGRAM_VERSION = 1.67.2
+# makefile (from `Makefile', line 29)
+.SHELLFLAGS = -ec
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.40575013.40575019.0E53F59C-A48B-484D-A4AF-D897A065A1DB
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# makefile (from `Makefile', line 133)
+ENVTEST = $(LOCALBIN)/setup-envtest
+# makefile (from `Makefile', line 169)
+KIND = $(shell which kind)
+# environment
+__CF_USER_TEXT_ENCODING = 0x1F5:0x0:0x0
+# environment
+COMMAND_MODE = unix2003
+# environment
+GIT_ASKPASS = /Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# environment
+PAGER = less
+# environment
+LC_ALL = C
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# environment
+HISTSIZE = 1000000000
+# environment
+GEM_ROOT = /opt/chefdk/embedded/lib/ruby/gems/2.3.0
+# default
+.INCLUDE_DIRS = /usr/local/include
+# environment
+VSCODE_GIT_IPC_HANDLE = /var/folders/88/nnj2_5s543j9zkb27pkl9r9r0000gn/T/vscode-git-f8e885ea75.sock
+# environment
+OWL = /Users/sgryczan/code/owl
+# makefile (from `Makefile', line 103)
+ignore-not-found = false
+# environment
+LANG = C
+# environment
+TERM = xterm-256color
+# makefile (from `Makefile', line 5)
+ENVTEST_K8S_VERSION = 1.23
+# environment
+VSCODE_PID = 983
+# variable set hash-table stats:
+# Load=108/1024=11%, Rehash=0, Collisions=16/195=8%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 16777221, inode 40966002): 18 files, no impossibilities.
+
+# 18 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+envtest: /Users/sgryczan/repos/sgryczan/route53-hosted-zone-controller/bin/setup-envtest
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+all: build
+#  Phony target (prerequisite of .PHONY).
+#  Command-line target.
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+
+docker-build: test
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 94):
+	docker build -t ${IMG} .
+	
+
+.PHONY: all help manifests generate fmt vet test kind-up build run docker-build docker-push install uninstall deploy undeploy kustomize controller-gen envtest kind
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+/Users/sgryczan/repos/sgryczan/route53-hosted-zone-controller/bin:
+#  Implicit rule search has not been done.
+#  Last modified 2022-06-06 10:31:03
+#  File has been updated.
+#  Successfully updated.
+#  commands to execute (from `Makefile', line 128):
+	mkdir -p $(LOCALBIN)
+	
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+uninstall: manifests kustomize
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 112):
+	$(KUSTOMIZE) build config/crd | kubectl delete --ignore-not-found=$(ignore-not-found) -f -
+	
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2022-06-06 10:35:30
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+kind:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+test: manifests generate fmt vet envtest
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 71):
+	KUBEBUILDER_ASSETS="$(shell $(ENVTEST) use $(ENVTEST_K8S_VERSION) -p path)" go test ./... -coverprofile cover.out
+	
+
+/Users/sgryczan/repos/sgryczan/route53-hosted-zone-controller/bin/controller-gen: /Users/sgryczan/repos/sgryczan/route53-hosted-zone-controller/bin
+#  Implicit rule search has not been done.
+#  Last modified 2022-06-06 10:31:03
+#  File has been updated.
+#  Successfully updated.
+#  commands to execute (from `Makefile', line 148):
+	GOBIN=$(LOCALBIN) go install sigs.k8s.io/controller-tools/cmd/controller-gen@$(CONTROLLER_TOOLS_VERSION)
+	
+
+build: generate fmt vet
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+#  commands to execute (from `Makefile', line 86):
+	go build -o bin/manager main.go
+	
+
+vet:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 67):
+	go vet ./...
+	
+
+help:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 49):
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+	
+
+kustomize: /Users/sgryczan/repos/sgryczan/route53-hosted-zone-controller/bin/kustomize
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+
+generate: controller-gen
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `'
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := generate
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := controller-gen
+# automatic
+# | := 
+# automatic
+# < := controller-gen
+# automatic
+# ^ := controller-gen
+# automatic
+# ? := controller-gen
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=2/14=14%
+#  commands to execute (from `Makefile', line 59):
+	$(CONTROLLER_GEN) object:headerFile="hack/boilerplate.go.txt" paths="./..."
+	
+
+/Users/sgryczan/repos/sgryczan/route53-hosted-zone-controller/bin/kustomize: /Users/sgryczan/repos/sgryczan/route53-hosted-zone-controller/bin
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 143):
+	curl -s $(KUSTOMIZE_INSTALL_SCRIPT) | bash -s -- $(subst v,,$(KUSTOMIZE_VERSION)) $(LOCALBIN)
+	
+
+undeploy:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+ 
+#  commands to execute (from `Makefile', line 121):
+	$(KUSTOMIZE) build config/default | kubectl delete --ignore-not-found=$(ignore-not-found) -f -
+	
+
+manifests: controller-gen
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 55):
+	$(CONTROLLER_GEN) rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases
+	
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+run: manifests generate fmt vet
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 90):
+	go run ./main.go
+	
+
+/Users/sgryczan/repos/sgryczan/route53-hosted-zone-controller/bin/setup-envtest: /Users/sgryczan/repos/sgryczan/route53-hosted-zone-controller/bin
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 153):
+	GOBIN=$(LOCALBIN) go install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
+	
+
+fmt:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 63):
+	go fmt ./...
+	
+
+deploy: manifests kustomize
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 116):
+	cd config/manager && $(KUSTOMIZE) edit set image controller=${IMG}
+	$(KUSTOMIZE) build config/default | kubectl apply -f -
+	
+
+kind-up:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 75):
+	$(KIND) create cluster --name ${KIND_CLUSTER_NAME} --config test/kind-config.yaml --kubeconfig test/kubeconfig.yaml
+	KUBECONFIG=test/kubeconfig.yaml kubectl create ns metal3
+	KUBECONFIG=test/kubeconfig.yaml clusterctl init -v=5 --config=test/clusterctl.yaml
+	KUBECONFIG=test/kubeconfig.yaml kubectl apply -f test/crds.yaml
+	KUBECONFIG=test/kubeconfig.yaml kubectl apply -f test/bmh.yaml
+	
+
+controller-gen: /Users/sgryczan/repos/sgryczan/route53-hosted-zone-controller/bin/controller-gen
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Successfully updated.
+
+docker-push:
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 98):
+	docker push ${IMG}
+	
+
+install: manifests kustomize
+#  Phony target (prerequisite of .PHONY).
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 108):
+	$(KUSTOMIZE) build config/crd | kubectl apply -f -
+	
+
+# files hash-table stats:
+# Load=28/1024=3%, Rehash=0, Collisions=2/109=2%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No general (`VPATH' variable) search path.
+
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+
+# Finished Make data base on Mon Jun  6 10:35:38 2022
+
+ 

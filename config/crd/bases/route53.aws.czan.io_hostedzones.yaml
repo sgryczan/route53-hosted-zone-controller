@@ -1,0 +1,93 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.8.0
+  creationTimestamp: null
+  name: hostedzones.route53.aws.czan.io
+spec:
+  group: route53.aws.czan.io
+  names:
+    kind: HostedZone
+    listKind: HostedZoneList
+    plural: hostedzones
+    singular: hostedzone
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: HostedZone is the Schema for the hostedzones API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: HostedZoneSpec defines the desired state of HostedZone
+            properties:
+              awsAccountID:
+                description: AWSAccountID indicates the AWS Account in which the zone
+                  resides
+                type: string
+              delegateOf:
+                description: DelegateOf indicates if this hosted zone is a delegate
+                  of another hosted zone.
+                properties:
+                  awsAccountID:
+                    type: string
+                  zoneID:
+                    type: string
+                required:
+                - awsAccountID
+                - zoneID
+                type: object
+              recurse_delete:
+                description: RecurseDelete. Indicates if all records in zone should
+                  be deleted when zone is deleted.
+                type: boolean
+            required:
+            - awsAccountID
+            - recurse_delete
+            type: object
+          status:
+            description: HostedZoneStatus defines the observed state of HostedZone
+            properties:
+              details:
+                description: HostedZoneDetails contains observed details about the
+                  hosted zone
+                properties:
+                  hostedZoneID:
+                    type: string
+                required:
+                - hostedZoneID
+                type: object
+              error:
+                type: string
+              ready:
+                type: boolean
+            required:
+            - details
+            - error
+            - ready
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

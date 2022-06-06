@@ -1,0 +1,6 @@
+apiVersion: route53.aws.czan.io/v1
+kind: HostedZone
+metadata:
+  name: hostedzone-sample
+spec:
+  # TODO(user): Add fields here
