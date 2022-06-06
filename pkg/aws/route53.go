@@ -2,6 +2,7 @@ package aws
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"strings"
 
@@ -62,7 +63,32 @@ func CreateHostedZone(zone string) error {
 		return err
 	}
 
-	log.Printf("CreateHostedZoneOutput: %+v", output)
+	js, err := json.MarshalIndent(output, "", "  ")
+	if err != nil {
+		return err
+	}
+	log.Printf("%s\n", js)
+
+	return nil
+}
+
+func DeleteHostedZone(id string) error {
+	svc := route53.NewFromConfig(cfg)
+	ctx := context.Background()
+
+	output, err := svc.DeleteHostedZone(ctx, &route53.DeleteHostedZoneInput{
+		Id: pointer.String(id),
+	})
+
+	if err != nil {
+		return err
+	}
+
+	js, err := json.MarshalIndent(output, "", "  ")
+	if err != nil {
+		return err
+	}
+	log.Printf("%s\n", js)
 
 	return nil
 }

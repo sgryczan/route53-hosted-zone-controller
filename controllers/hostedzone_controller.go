@@ -83,6 +83,10 @@ func (r *HostedZoneReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 	err = r53util.CreateHostedZone(hostedZone.Name)
 	if err != nil {
 		r.Log.Error(err, "failed to create hosted zone", "name", hostedZone.Name)
+		hostedZone.Status.Error = err.Error()
+		r.Client.Status().Update(context.Background(), hostedZone)
+
+		return ctrl.Result{}, err
 	}
 
 	return ctrl.Result{}, nil
