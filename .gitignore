@@ -23,3 +23,7 @@ testbin/*
 *.swp
 *.swo
 *~
+
+# test files
+test/kubeconfig.yaml
+test/stack.yaml

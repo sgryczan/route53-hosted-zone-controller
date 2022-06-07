@@ -18,16 +18,21 @@ package controllers
 
 import (
 	"context"
+	"errors"
+	"strings"
 
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	"github.com/go-logr/logr"
 	route53v1 "github.com/sgryczan/r53-hz-controller/api/v1"
 	r53util "github.com/sgryczan/r53-hz-controller/pkg/aws"
+	"github.com/sgryczan/r53-hz-controller/pkg/common"
 )
 
 // HostedZoneReconciler reconciles a HostedZone object
@@ -66,6 +71,18 @@ func (r *HostedZoneReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 		return ctrl.Result{}, err
 	}
 
+	if hostedZone.DeletionTimestamp.IsZero() {
+		if !controllerutil.ContainsFinalizer(hostedZone, common.FinalizerName) {
+			controllerutil.AddFinalizer(hostedZone, common.FinalizerName)
+			err := r.Client.Update(context.TODO(), hostedZone)
+			if err != nil {
+				return ctrl.Result{}, err
+			}
+		}
+	} else {
+		return r.reconcileDelete(hostedZone)
+	}
+
 	// Check if the zone exists already
 	zoneExists, err := r53util.HostedZoneExists(hostedZone.Name)
 
@@ -76,16 +93,78 @@ func (r *HostedZoneReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 
 	if *zoneExists {
 		r.Log.Info("Zone exists", "name", hostedZone.Name)
+	} else {
+		// If not, create the zone
+		err = r53util.CreateHostedZone(hostedZone.Name)
+		if err != nil {
+			r.Log.Error(err, "failed to create hosted zone", "name", hostedZone.Name)
+			hostedZone.Status.Error = err.Error()
+			r.Client.Status().Update(context.Background(), hostedZone)
+
+			return ctrl.Result{}, err
+		}
+	}
+
+	// update zone details
+	err = r.updateZoneDetail(ctx, hostedZone)
+	if err != nil {
+		r.Log.Error(err, "failed to update zone details", "name", hostedZone.Name)
+		return ctrl.Result{}, err
+	}
+
+	return ctrl.Result{}, nil
+}
+
+func (r *HostedZoneReconciler) updateZoneDetail(ctx context.Context, hostedZone *route53v1.HostedZone) error {
+	// update zone details
+	details, err := r53util.GetZoneDetailByName(hostedZone.Name)
+	if err != nil {
+		r.Log.Error(err, "failed to get details for zone", "name", hostedZone.Name)
+		return err
+	}
+
+	zoneID := strings.Replace(*details.HostedZones[0].Id, "/hostedzone/", "", -1)
+
+	hostedZone.Status.Details = route53v1.HostedZoneDetails{
+		ID:             zoneID,
+		PrivateZone:    details.HostedZones[0].Config.PrivateZone,
+		RecordSetCount: *details.HostedZones[0].ResourceRecordSetCount,
+	}
+
+	hostedZone.Status.Ready = true
+	hostedZone.Status.Error = ""
+
+	err = r.Client.Status().Update(ctx, hostedZone)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *HostedZoneReconciler) reconcileDelete(hostedZone *route53v1.HostedZone) (reconcile.Result, error) {
+	var err error
+	ctx := context.Background()
+	if hostedZone.DeletionTimestamp.IsZero() {
+		r.Log.Info("Deletion timestamp is not set", "name", hostedZone.Name)
 		return ctrl.Result{}, nil
 	}
 
-	// If not, create the zone
-	err = r53util.CreateHostedZone(hostedZone.Name)
-	if err != nil {
-		r.Log.Error(err, "failed to create hosted zone", "name", hostedZone.Name)
-		hostedZone.Status.Error = err.Error()
-		r.Client.Status().Update(context.Background(), hostedZone)
+	zoneID := hostedZone.Status.Details.ID
 
+	if zoneID == "" {
+		return ctrl.Result{}, errors.New("hostedZone resource has no ID")
+	}
+
+	// Delete the zone
+	err = r53util.DeleteHostedZone(hostedZone.Status.Details.ID)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	controllerutil.RemoveFinalizer(hostedZone, common.FinalizerName)
+	err = r.Client.Update(ctx, hostedZone)
+	if err != nil {
 		return ctrl.Result{}, err
 	}
 

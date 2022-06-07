@@ -12,10 +12,16 @@ spec:
     kind: HostedZone
     listKind: HostedZoneList
     plural: hostedzones
+    shortNames:
+    - hz
     singular: hostedzone
   scope: Namespaced
   versions:
-  - name: v1
+  - additionalPrinterColumns:
+    - jsonPath: .status.details.hostedZoneID
+      name: Id
+      type: string
+    name: v1
     schema:
       openAPIV3Schema:
         description: HostedZone is the Schema for the hostedzones API
@@ -38,10 +44,12 @@ spec:
               awsAccountID:
                 description: AWSAccountID indicates the AWS Account in which the zone
                   resides
+                nullable: true
                 type: string
               delegateOf:
                 description: DelegateOf indicates if this hosted zone is a delegate
                   of another hosted zone.
+                nullable: true
                 properties:
                   awsAccountID:
                     type: string
@@ -51,13 +59,11 @@ spec:
                 - awsAccountID
                 - zoneID
                 type: object
-              recurse_delete:
+              recurseDelete:
                 description: RecurseDelete. Indicates if all records in zone should
                   be deleted when zone is deleted.
+                nullable: true
                 type: boolean
-            required:
-            - awsAccountID
-            - recurse_delete
             type: object
           status:
             description: HostedZoneStatus defines the observed state of HostedZone
@@ -65,20 +71,22 @@ spec:
               details:
                 description: HostedZoneDetails contains observed details about the
                   hosted zone
+                nullable: true
                 properties:
                   hostedZoneID:
                     type: string
-                required:
-                - hostedZoneID
+                  privateZone:
+                    type: boolean
+                  recordSetCount:
+                    format: int64
+                    type: integer
                 type: object
               error:
+                nullable: true
                 type: string
               ready:
+                nullable: true
                 type: boolean
-            required:
-            - details
-            - error
-            - ready
             type: object
         type: object
     served: true

@@ -28,8 +28,7 @@ func init() {
 	}
 }
 
-func HostedZoneExists(zone string) (*bool, error) {
-
+func GetZoneDetailByName(zone string) (*route53.ListHostedZonesByNameOutput, error) {
 	// Using the Config value, create the Route53 client
 	svc := route53.NewFromConfig(cfg)
 
@@ -38,6 +37,24 @@ func HostedZoneExists(zone string) (*bool, error) {
 	output, err := svc.ListHostedZonesByName(ctx, &route53.ListHostedZonesByNameInput{
 		DNSName: &zone,
 	})
+
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	js, err := json.MarshalIndent(output, "", "  ")
+	if err != nil {
+		return nil, err
+	}
+	log.Printf("%s\n", js)
+
+	return output, nil
+}
+
+func HostedZoneExists(zone string) (*bool, error) {
+
+	output, err := GetZoneDetailByName(zone)
 
 	if err != nil {
 		log.Println(err)

@@ -26,13 +26,19 @@ import (
 // HostedZoneSpec defines the desired state of HostedZone
 type HostedZoneSpec struct {
 	// AWSAccountID indicates the AWS Account in which the zone resides
-	AWSAccountID string `json:"awsAccountID"`
+	// +kubebuilder:validation:Optional
+	// +nullable
+	AWSAccountID string `json:"awsAccountID,omitempty"`
 
 	// DelegateOf indicates if this hosted zone is a delegate of another hosted zone.
+	// +kubebuilder:validation:Optional
+	// +nullable
 	DelegateOf HostedZoneParent `json:"delegateOf,omitempty"`
 
 	// RecurseDelete. Indicates if all records in zone should be deleted when zone is deleted.
-	RecurseDelete bool `json:"recurse_delete"`
+	// +kubebuilder:validation:Optional
+	// +nullable
+	RecurseDelete bool `json:"recurseDelete,omitempty"`
 }
 
 // HostedZoneParent represents a parent hosted zone in an AWS Account
@@ -43,13 +49,21 @@ type HostedZoneParent struct {
 
 // HostedZoneStatus defines the observed state of HostedZone
 type HostedZoneStatus struct {
+	// +kubebuilder:validation:Optional
+	// +nullable
 	Details HostedZoneDetails `json:"details"`
-	Ready   bool              `json:"ready"`
-	Error   string            `json:"error"`
+	// +kubebuilder:validation:Optional
+	// +nullable
+	Ready bool `json:"ready"`
+	// +kubebuilder:validation:Optional
+	// +nullable
+	Error string `json:"error"`
 }
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
+//+kubebuilder:resource:shortName="hz"
+//+kubebuilder:printcolumn:name="Id",type=string,JSONPath=`.status.details.hostedZoneID`
 
 // HostedZone is the Schema for the hostedzones API
 type HostedZone struct {
@@ -71,7 +85,9 @@ type HostedZoneList struct {
 
 // HostedZoneDetails contains observed details about the hosted zone
 type HostedZoneDetails struct {
-	ID string `json:"hostedZoneID"`
+	ID             string `json:"hostedZoneID,omitempty"`
+	PrivateZone    bool   `json:"privateZone,omitempty"`
+	RecordSetCount int64  `json:"recordSetCount,omitempty"`
 }
 
 func init() {
