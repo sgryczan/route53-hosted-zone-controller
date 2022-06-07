@@ -19,6 +19,7 @@ package controllers
 import (
 	"context"
 	"errors"
+	"fmt"
 	"strings"
 
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
@@ -112,12 +113,32 @@ func (r *HostedZoneReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 		return ctrl.Result{}, err
 	}
 
+	// handle zone delegation if field is non-empty
+	if hostedZone.Spec.DelegateOf != (route53v1.HostedZoneParent{}) {
+		r.Log.Info("Handling delegation", "name", hostedZone.Name, "reason", ".spec.delegateOf field is non-nil", "value", fmt.Sprintf("%+v", hostedZone.Spec.DelegateOf))
+		nameServers, err := r53util.GetNameServers(hostedZone.Name)
+		if err != nil {
+			return ctrl.Result{}, err
+		}
+
+		r.Log.Info("Create zone delegation", "zone", hostedZone.Name)
+		err = r53util.CreateZoneDelegation(
+			hostedZone.Name,
+			nameServers,
+			hostedZone.Spec.DelegateOf.ZoneID,
+			hostedZone.Spec.DelegateOf.RoleARN,
+		)
+		if err != nil {
+			return ctrl.Result{}, err
+		}
+	}
+
 	return ctrl.Result{}, nil
 }
 
 func (r *HostedZoneReconciler) updateZoneDetail(ctx context.Context, hostedZone *route53v1.HostedZone) error {
 	// update zone details
-	details, err := r53util.GetZoneDetailByName(hostedZone.Name)
+	details, err := r53util.GetZoneByName(hostedZone.Name)
 	if err != nil {
 		r.Log.Error(err, "failed to get details for zone", "name", hostedZone.Name)
 		return err

@@ -3,4 +3,15 @@ kind: HostedZone
 metadata:
   name: hostedzone.myexample.com
 spec:
-  # TODO(user): Add fields here
+
+---
+
+apiVersion: route53.aws.czan.io/v1
+kind: HostedZone
+metadata:
+  name: my.hostedzone.myexample.com
+spec:
+  delegateOf:
+    zoneID: Z065956317Y2YMDIOBSZP
+    roleARN: arn:aws:iam::696758779764:role/route53admin
+

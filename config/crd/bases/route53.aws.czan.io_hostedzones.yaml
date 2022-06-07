@@ -41,22 +41,17 @@ spec:
           spec:
             description: HostedZoneSpec defines the desired state of HostedZone
             properties:
-              awsAccountID:
-                description: AWSAccountID indicates the AWS Account in which the zone
-                  resides
-                nullable: true
-                type: string
               delegateOf:
                 description: DelegateOf indicates if this hosted zone is a delegate
                   of another hosted zone.
                 nullable: true
                 properties:
-                  awsAccountID:
+                  roleARN:
                     type: string
                   zoneID:
                     type: string
                 required:
-                - awsAccountID
+                - roleARN
                 - zoneID
                 type: object
               recurseDelete:

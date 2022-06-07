@@ -25,11 +25,6 @@ import (
 
 // HostedZoneSpec defines the desired state of HostedZone
 type HostedZoneSpec struct {
-	// AWSAccountID indicates the AWS Account in which the zone resides
-	// +kubebuilder:validation:Optional
-	// +nullable
-	AWSAccountID string `json:"awsAccountID,omitempty"`
-
 	// DelegateOf indicates if this hosted zone is a delegate of another hosted zone.
 	// +kubebuilder:validation:Optional
 	// +nullable
@@ -43,9 +38,8 @@ type HostedZoneSpec struct {
 
 // HostedZoneParent represents a parent hosted zone in an AWS Account
 type HostedZoneParent struct {
-	AWSAccountID string `json:"awsAccountID"`
-	ZoneID       string `json:"zoneID"`
-	RoleARN      string `json:"roleARN"`
+	ZoneID  string `json:"zoneID"`
+	RoleARN string `json:"roleARN"`
 }
 
 // HostedZoneStatus defines the observed state of HostedZone
