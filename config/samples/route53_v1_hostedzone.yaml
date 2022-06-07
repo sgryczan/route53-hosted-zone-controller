@@ -12,6 +12,6 @@ metadata:
   name: my.hostedzone.myexample.com
 spec:
   delegateOf:
-    zoneID: Z065956317Y2YMDIOBSZP
+    zoneID: Z01470691M28KEDQOABXT
     roleARN: arn:aws:iam::696758779764:role/route53admin
 

@@ -177,6 +177,25 @@ func (r *HostedZoneReconciler) reconcileDelete(hostedZone *route53v1.HostedZone)
 		return ctrl.Result{}, errors.New("hostedZone resource has no ID")
 	}
 
+	// handle zone delegation if field is non-empty
+	if hostedZone.Spec.DelegateOf != (route53v1.HostedZoneParent{}) {
+		r.Log.Info("Deleting delegation record", "name", hostedZone.Name, "reason", ".spec.delegateOf field is non-nil", "value", fmt.Sprintf("%+v", hostedZone.Spec.DelegateOf))
+		nameServers, err := r53util.GetNameServers(hostedZone.Name)
+		if err != nil {
+			return ctrl.Result{}, err
+		}
+
+		r.Log.Info("Delete zone delegation", "zone", hostedZone.Name)
+		err = r53util.DeleteZoneDelegation(
+			hostedZone.Name,
+			nameServers,
+			hostedZone.Spec.DelegateOf.ZoneID,
+			hostedZone.Spec.DelegateOf.RoleARN,
+		)
+		if err != nil {
+			return ctrl.Result{}, err
+		}
+	}
 	// Delete the zone
 	err = r53util.DeleteHostedZone(hostedZone.Status.Details.ID)
 	if err != nil {

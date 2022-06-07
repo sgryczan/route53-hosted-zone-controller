@@ -127,6 +127,49 @@ func DeleteHostedZone(id string) error {
 	return nil
 }
 
+func DeleteZoneDelegation(delegationName string, nameservers []string, zoneID string, roleArnToAssume string) error {
+	config, err := AssumeRoleArn(roleArnToAssume)
+	if err != nil {
+		return err
+	}
+
+	r53svc := route53.NewFromConfig(*config)
+
+	nsList := []types.ResourceRecord{}
+	for _, ns := range nameservers {
+		nsList = append(nsList, types.ResourceRecord{Value: pointer.String(ns + ".")})
+	}
+
+	batch := &types.ChangeBatch{
+		Changes: []types.Change{
+			{
+				Action: types.ChangeActionDelete,
+				ResourceRecordSet: &types.ResourceRecordSet{
+					Name:            pointer.String(delegationName),
+					Type:            types.RRTypeNs,
+					TTL:             pointer.Int64(300),
+					ResourceRecords: nsList,
+				},
+			},
+		},
+	}
+
+	printJSON(batch)
+
+	output, err := r53svc.ChangeResourceRecordSets(context.Background(), &route53.ChangeResourceRecordSetsInput{
+		ChangeBatch:  batch,
+		HostedZoneId: &zoneID,
+	})
+
+	printJSON(output)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func CreateZoneDelegation(delegationName string, nameservers []string, zoneID string, roleArnToAssume string) error {
 	config, err := AssumeRoleArn(roleArnToAssume)
 	if err != nil {
