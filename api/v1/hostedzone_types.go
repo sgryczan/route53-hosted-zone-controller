@@ -45,6 +45,7 @@ type HostedZoneSpec struct {
 type HostedZoneParent struct {
 	AWSAccountID string `json:"awsAccountID"`
 	ZoneID       string `json:"zoneID"`
+	RoleARN      string `json:"roleARN"`
 }
 
 // HostedZoneStatus defines the observed state of HostedZone
