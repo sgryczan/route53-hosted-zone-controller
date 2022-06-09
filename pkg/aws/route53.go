@@ -13,6 +13,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 
+	route53v1 "github.com/sgryczan/r53-hz-controller/api/v1"
+
 	"github.com/google/uuid"
 	"k8s.io/utils/pointer"
 )
@@ -123,6 +125,88 @@ func DeleteHostedZone(id string) error {
 	}
 
 	printJSON(output)
+
+	return nil
+}
+
+func convertRecordSet(recordSet *route53v1.ResourceRecordSet) *types.ResourceRecordSet {
+	var rr []types.ResourceRecord
+
+	for _, i := range recordSet.ResourceRecords {
+		r := types.ResourceRecord{
+			Value: &i.Value,
+		}
+		rr = append(rr, r)
+	}
+
+	output := &types.ResourceRecordSet{
+		Name:            &recordSet.Name,
+		Type:            types.RRType(recordSet.Type),
+		TTL:             &recordSet.TTL,
+		ResourceRecords: rr,
+	}
+
+	return output
+}
+
+func UpdateRecordSet(zoneID string, recordSet *route53v1.ResourceRecordSet) error {
+	r53svc := route53.NewFromConfig(cfg)
+	ctx := context.Background()
+
+	rs := convertRecordSet(recordSet)
+
+	batch := &types.ChangeBatch{
+		Changes: []types.Change{
+			{
+				Action:            types.ChangeActionUpsert,
+				ResourceRecordSet: rs,
+			},
+		},
+	}
+
+	printJSON(batch)
+
+	output, err := r53svc.ChangeResourceRecordSets(ctx, &route53.ChangeResourceRecordSetsInput{
+		ChangeBatch:  batch,
+		HostedZoneId: &zoneID,
+	})
+
+	printJSON(output)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func DeleteRecordSet(zoneID string, recordSet *route53v1.ResourceRecordSet) error {
+	r53svc := route53.NewFromConfig(cfg)
+	ctx := context.Background()
+
+	rs := convertRecordSet(recordSet)
+
+	batch := &types.ChangeBatch{
+		Changes: []types.Change{
+			{
+				Action:            types.ChangeActionDelete,
+				ResourceRecordSet: rs,
+			},
+		},
+	}
+
+	printJSON(batch)
+
+	output, err := r53svc.ChangeResourceRecordSets(ctx, &route53.ChangeResourceRecordSetsInput{
+		ChangeBatch:  batch,
+		HostedZoneId: &zoneID,
+	})
+
+	printJSON(output)
+
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -246,6 +330,18 @@ func GetNameServers(zone string) ([]string, error) {
 	}
 
 	return zoneDetail.DelegationSet.NameServers, nil
+}
+
+func GetZoneIDByName(zone string) (*string, error) {
+	// Get the hosted zone ID
+	zoneInfo, err := GetZoneByName(zone)
+	if err != nil {
+		return nil, err
+	}
+
+	zoneID := strings.Replace(*zoneInfo.HostedZones[0].Id, "/hostedzone/", "", -1)
+
+	return &zoneID, nil
 }
 
 func genUUID() *string {

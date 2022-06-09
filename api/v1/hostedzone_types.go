@@ -17,6 +17,7 @@ limitations under the License.
 package v1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -38,8 +39,8 @@ type HostedZoneSpec struct {
 
 // HostedZoneParent represents a parent hosted zone in an AWS Account
 type HostedZoneParent struct {
-	ZoneID  string `json:"zoneID"`
-	RoleARN string `json:"roleARN"`
+	HostedZoneRef corev1.ObjectReference `json:"hostedZoneRef,omitempty"`
+	RoleARN       string                 `json:"roleARN"`
 }
 
 // HostedZoneStatus defines the observed state of HostedZone

@@ -13,4 +13,13 @@ resources:
   kind: HostedZone
   path: github.com/sgryczan/r53-hz-controller/api/v1
   version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: aws.czan.io
+  group: route53
+  kind: ResourceRecord
+  path: github.com/sgryczan/r53-hz-controller/api/v1
+  version: v1
 version: "3"

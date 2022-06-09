@@ -121,11 +121,17 @@ func (r *HostedZoneReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 			return ctrl.Result{}, err
 		}
 
+		zoneID, err := r53util.GetZoneIDByName(hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
+		if err != nil {
+			r.Log.Error(err, "failed to retreive hosted zone id", "name", hostedZone.Name, "target", hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
+			return ctrl.Result{}, err
+		}
+
 		r.Log.Info("Create zone delegation", "zone", hostedZone.Name)
 		err = r53util.CreateZoneDelegation(
 			hostedZone.Name,
 			nameServers,
-			hostedZone.Spec.DelegateOf.ZoneID,
+			*zoneID,
 			hostedZone.Spec.DelegateOf.RoleARN,
 		)
 		if err != nil {
@@ -185,11 +191,17 @@ func (r *HostedZoneReconciler) reconcileDelete(hostedZone *route53v1.HostedZone)
 			return ctrl.Result{}, err
 		}
 
+		zoneID, err := r53util.GetZoneIDByName(hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
+		if err != nil {
+			r.Log.Error(err, "failed to retreive hosted zone id", "name", hostedZone.Name, "target", hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
+			return ctrl.Result{}, err
+		}
+
 		r.Log.Info("Delete zone delegation", "zone", hostedZone.Name)
 		err = r53util.DeleteZoneDelegation(
 			hostedZone.Name,
 			nameServers,
-			hostedZone.Spec.DelegateOf.ZoneID,
+			*zoneID,
 			hostedZone.Spec.DelegateOf.RoleARN,
 		)
 		if err != nil {
