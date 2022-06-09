@@ -28,9 +28,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	"github.com/go-logr/logr"
-	route53v1 "github.com/sgryczan/r53-hz-controller/api/v1"
-	r53util "github.com/sgryczan/r53-hz-controller/pkg/aws"
-	"github.com/sgryczan/r53-hz-controller/pkg/common"
+	route53v1 "github.com/sgryczan/route53-hosted-zone-controller/api/v1"
+	r53util "github.com/sgryczan/route53-hosted-zone-controller/pkg/aws"
+	"github.com/sgryczan/route53-hosted-zone-controller/pkg/common"
 )
 
 // ResourceRecordReconciler reconciles a ResourceRecord object
@@ -82,7 +82,7 @@ func (r *ResourceRecordReconciler) Reconcile(ctx context.Context, req ctrl.Reque
 	}
 
 	// Get the hosted zone ID
-	zoneID, err := r53util.GetZoneIDByName(resourceRecord.Spec.HostedZone.Name)
+	zoneID, err := r53util.GetZoneIDByName(resourceRecord.Spec.HostedZoneRef.Name)
 	if err != nil {
 		r.Log.Error(err, "failed to retreive hosted zone id", "name", resourceRecord.Name)
 		return ctrl.Result{}, err
@@ -106,7 +106,7 @@ func (r *ResourceRecordReconciler) reconcileDelete(resourceRecord *route53v1.Res
 	}
 
 	// Get the hosted zone ID
-	zoneID, err := r53util.GetZoneIDByName(resourceRecord.Spec.HostedZone.Name)
+	zoneID, err := r53util.GetZoneIDByName(resourceRecord.Spec.HostedZoneRef.Name)
 	if err != nil {
 		r.Log.Error(err, "failed to retreive hosted zone id", "name", resourceRecord.Name)
 		return ctrl.Result{}, err

@@ -31,7 +31,7 @@ spec:
         - /manager
         args:
         - --leader-elect
-        image: docker.io/sgryczan/r53-hz-controller:latest
+        image: docker.io/sgryczan/route53-hosted-zone-controller:latest
         name: manager
         imagePullPolicy: Always
         securityContext:

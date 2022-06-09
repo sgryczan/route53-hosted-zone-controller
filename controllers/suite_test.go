@@ -30,7 +30,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	route53v1 "github.com/sgryczan/r53-hz-controller/api/v1"
+	route53v1 "github.com/sgryczan/route53-hosted-zone-controller/api/v1"
 	//+kubebuilder:scaffold:imports
 )
 

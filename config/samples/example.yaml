@@ -23,7 +23,7 @@ kind: ResourceRecord
 metadata:
   name: resourcerecord-sample
 spec:
-  hostedZone:
+  hostedZoneRef:
     name: my.hostedzone.myexample.com
   recordSet:
     name: my.hostedzone.myexample.com

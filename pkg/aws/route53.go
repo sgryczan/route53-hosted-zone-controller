@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 
-	route53v1 "github.com/sgryczan/r53-hz-controller/api/v1"
+	route53v1 "github.com/sgryczan/route53-hosted-zone-controller/api/v1"
 
 	"github.com/google/uuid"
 	"k8s.io/utils/pointer"

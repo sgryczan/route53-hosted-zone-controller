@@ -1,4 +1,4 @@
-module github.com/sgryczan/r53-hz-controller
+module github.com/sgryczan/route53-hosted-zone-controller
 
 go 1.17
 

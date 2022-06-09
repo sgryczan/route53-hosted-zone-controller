@@ -31,9 +31,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	"github.com/go-logr/logr"
-	route53v1 "github.com/sgryczan/r53-hz-controller/api/v1"
-	r53util "github.com/sgryczan/r53-hz-controller/pkg/aws"
-	"github.com/sgryczan/r53-hz-controller/pkg/common"
+	route53v1 "github.com/sgryczan/route53-hosted-zone-controller/api/v1"
+	r53util "github.com/sgryczan/route53-hosted-zone-controller/pkg/aws"
+	"github.com/sgryczan/route53-hosted-zone-controller/pkg/common"
 )
 
 // HostedZoneReconciler reconciles a HostedZone object

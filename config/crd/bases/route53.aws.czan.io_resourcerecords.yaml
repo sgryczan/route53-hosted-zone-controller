@@ -35,7 +35,7 @@ spec:
           spec:
             description: ResourceRecordSpec defines the desired state of ResourceRecord
             properties:
-              hostedZone:
+              hostedZoneRef:
                 description: 'ObjectReference contains enough information to let you
                   inspect or modify the referred object. --- New uses of this type
                   are discouraged because of difficulty describing its usage when

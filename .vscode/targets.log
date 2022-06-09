@@ -66,7 +66,7 @@ LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
 VSCODE_IPC_HOOK = /Users/sgryczan/Library/Application Support/Code/1.67.2-main.sock
 # makefile (from `Makefile', line 14)
-KIND_CLUSTER_NAME = r53-hz-controller
+KIND_CLUSTER_NAME = route53-hosted-zone-controller
 # environment
 GOPATH = /Users/sgryczan/go
 # environment
@@ -90,7 +90,7 @@ GOBIN = $(shell go env GOPATH)/bin
 # environment
 DISPLAY = /private/tmp/com.apple.launchd.3XtOGuiHtv/org.macosforge.xquartz:0
 # makefile (from `Makefile', line 8)
-IMAGE = sgryczan/r53-hz-controller
+IMAGE = sgryczan/route53-hosted-zone-controller
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment

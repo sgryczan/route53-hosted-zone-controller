@@ -26,8 +26,8 @@ import (
 
 // ResourceRecordSpec defines the desired state of ResourceRecord
 type ResourceRecordSpec struct {
-	RecordSet  ResourceRecordSet      `json:"recordSet"`
-	HostedZone corev1.ObjectReference `json:"hostedZone,omitempty"`
+	RecordSet     ResourceRecordSet      `json:"recordSet"`
+	HostedZoneRef corev1.ObjectReference `json:"hostedZoneRef,omitempty"`
 }
 
 type ResourceRecordSet struct {

@@ -2,7 +2,7 @@ domain: aws.czan.io
 layout:
 - go.kubebuilder.io/v3
 projectName: route53-hosted-zone-controller
-repo: github.com/sgryczan/r53-hz-controller
+repo: github.com/sgryczan/route53-hosted-zone-controller
 resources:
 - api:
     crdVersion: v1
@@ -11,7 +11,7 @@ resources:
   domain: aws.czan.io
   group: route53
   kind: HostedZone
-  path: github.com/sgryczan/r53-hz-controller/api/v1
+  path: github.com/sgryczan/route53-hosted-zone-controller/api/v1
   version: v1
 - api:
     crdVersion: v1
@@ -20,6 +20,6 @@ resources:
   domain: aws.czan.io
   group: route53
   kind: ResourceRecord
-  path: github.com/sgryczan/r53-hz-controller/api/v1
+  path: github.com/sgryczan/route53-hosted-zone-controller/api/v1
   version: v1
 version: "3"
