@@ -3,6 +3,7 @@ package aws
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"strings"
 
@@ -339,6 +340,9 @@ func GetZoneIDByName(zone string) (*string, error) {
 		return nil, err
 	}
 
+	if len(zoneInfo.HostedZones) == 0 {
+		return nil, fmt.Errorf("failed to retreive hosted zone")
+	}
 	zoneID := strings.Replace(*zoneInfo.HostedZones[0].Id, "/hostedzone/", "", -1)
 
 	return &zoneID, nil

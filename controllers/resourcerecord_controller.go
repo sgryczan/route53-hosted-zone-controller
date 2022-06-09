@@ -18,7 +18,6 @@ package controllers
 
 import (
 	"context"
-	"strings"
 
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -107,16 +106,14 @@ func (r *ResourceRecordReconciler) reconcileDelete(resourceRecord *route53v1.Res
 	}
 
 	// Get the hosted zone ID
-	zone, err := r53util.GetZoneByName(resourceRecord.Spec.HostedZone.Name)
+	zoneID, err := r53util.GetZoneIDByName(resourceRecord.Spec.HostedZone.Name)
 	if err != nil {
 		r.Log.Error(err, "failed to retreive hosted zone id", "name", resourceRecord.Name)
 		return ctrl.Result{}, err
 	}
 
-	zoneID := strings.Replace(*zone.HostedZones[0].Id, "/hostedzone/", "", -1)
-
 	// Delete the record
-	err = r53util.DeleteRecordSet(zoneID, &resourceRecord.Spec.RecordSet)
+	err = r53util.DeleteRecordSet(*zoneID, &resourceRecord.Spec.RecordSet)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
