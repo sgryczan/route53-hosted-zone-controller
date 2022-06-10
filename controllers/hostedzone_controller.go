@@ -34,6 +34,7 @@ import (
 	route53v1 "github.com/sgryczan/route53-hosted-zone-controller/api/v1"
 	r53util "github.com/sgryczan/route53-hosted-zone-controller/pkg/aws"
 	"github.com/sgryczan/route53-hosted-zone-controller/pkg/common"
+	corev1 "k8s.io/api/core/v1"
 )
 
 // HostedZoneReconciler reconciles a HostedZone object
@@ -115,31 +116,48 @@ func (r *HostedZoneReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 
 	// handle zone delegation if field is non-empty
 	if hostedZone.Spec.DelegateOf != (route53v1.HostedZoneParent{}) {
+
 		r.Log.Info("Handling delegation", "name", hostedZone.Name, "reason", ".spec.delegateOf field is non-nil", "value", fmt.Sprintf("%+v", hostedZone.Spec.DelegateOf))
-		nameServers, err := r53util.GetNameServers(hostedZone.Name)
-		if err != nil {
-			return ctrl.Result{}, err
+		var zoneID *string
+
+		if (hostedZone.Spec.DelegateOf.HostedZoneRef != corev1.ObjectReference{}) {
+			r.Log.Info("retrieving zone ID", "name", hostedZone.Name, "target", hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
+			zoneID, err = r53util.GetZoneIDByName(hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
+			if err != nil {
+				r.Log.Error(err, "failed to retrieve hosted zone id", "name", hostedZone.Name, "target", hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
+				return ctrl.Result{}, err
+			}
+		} else if hostedZone.Spec.DelegateOf.ZoneID != "" {
+			r.Log.Info("using specified zoneID", "name", hostedZone.Name, "zoneID", &hostedZone.Spec.DelegateOf.ZoneID)
+			zoneID = &hostedZone.Spec.DelegateOf.ZoneID
 		}
 
-		zoneID, err := r53util.GetZoneIDByName(hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
-		if err != nil {
-			r.Log.Error(err, "failed to retreive hosted zone id", "name", hostedZone.Name, "target", hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
-			return ctrl.Result{}, err
+		if zoneID != nil {
+
+			r.Log.Info("retrieving nameservers", "name", hostedZone.Name)
+			nameServers, err := r53util.GetNameServers(hostedZone.Name)
+			if err != nil {
+				return ctrl.Result{}, err
+			}
+
+			r.Log.Info("Create zone delegation", "zone", hostedZone.Name, "zoneID", *zoneID)
+			err = r53util.CreateZoneDelegation(
+				hostedZone.Name,
+				nameServers,
+				*zoneID,
+				hostedZone.Spec.DelegateOf.RoleARN,
+			)
+			if err != nil {
+				return ctrl.Result{}, err
+			}
+		} else {
+			r.Log.Info("skipping delegation as neither a hostedZoneRef or zoneID was specified", "name", hostedZone.Name)
 		}
 
-		r.Log.Info("Create zone delegation", "zone", hostedZone.Name)
-		err = r53util.CreateZoneDelegation(
-			hostedZone.Name,
-			nameServers,
-			*zoneID,
-			hostedZone.Spec.DelegateOf.RoleARN,
-		)
-		if err != nil {
-			return ctrl.Result{}, err
-		}
 	}
 
 	return ctrl.Result{}, nil
+
 }
 
 func (r *HostedZoneReconciler) updateZoneDetail(ctx context.Context, hostedZone *route53v1.HostedZone) error {
@@ -191,21 +209,31 @@ func (r *HostedZoneReconciler) reconcileDelete(hostedZone *route53v1.HostedZone)
 			return ctrl.Result{}, err
 		}
 
-		zoneID, err := r53util.GetZoneIDByName(hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
-		if err != nil {
-			r.Log.Error(err, "failed to retreive hosted zone id", "name", hostedZone.Name, "target", hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
-			return ctrl.Result{}, err
+		var zoneID *string
+
+		if (hostedZone.Spec.DelegateOf.HostedZoneRef != corev1.ObjectReference{}) {
+			r.Log.Info("retrieving zone ID", "name", hostedZone.Name, "target", hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
+			zoneID, err = r53util.GetZoneIDByName(hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
+			if err != nil {
+				r.Log.Error(err, "failed to retrieve hosted zone id", "name", hostedZone.Name, "target", hostedZone.Spec.DelegateOf.HostedZoneRef.Name)
+				return ctrl.Result{}, err
+			}
+		} else if hostedZone.Spec.DelegateOf.ZoneID != "" {
+			r.Log.Info("using specified zoneID", "name", hostedZone.Name, "zoneID", &hostedZone.Spec.DelegateOf.ZoneID)
+			zoneID = &hostedZone.Spec.DelegateOf.ZoneID
 		}
 
-		r.Log.Info("Delete zone delegation", "zone", hostedZone.Name)
-		err = r53util.DeleteZoneDelegation(
-			hostedZone.Name,
-			nameServers,
-			*zoneID,
-			hostedZone.Spec.DelegateOf.RoleARN,
-		)
-		if err != nil {
-			return ctrl.Result{}, err
+		if zoneID != nil {
+			r.Log.Info("Delete zone delegation", "zone", hostedZone.Name)
+			err = r53util.DeleteZoneDelegation(
+				hostedZone.Name,
+				nameServers,
+				*zoneID,
+				hostedZone.Spec.DelegateOf.RoleARN,
+			)
+			if err != nil {
+				return ctrl.Result{}, err
+			}
 		}
 	}
 	// Delete the zone

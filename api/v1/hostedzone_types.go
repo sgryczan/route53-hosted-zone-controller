@@ -39,8 +39,13 @@ type HostedZoneSpec struct {
 
 // HostedZoneParent represents a parent hosted zone in an AWS Account
 type HostedZoneParent struct {
+	// +kubebuilder:validation:Optional
+	// +nullable
 	HostedZoneRef corev1.ObjectReference `json:"hostedZoneRef,omitempty"`
-	RoleARN       string                 `json:"roleARN"`
+	// +kubebuilder:validation:Optional
+	// +nullable
+	ZoneID  string `json:"zoneID"`
+	RoleARN string `json:"roleARN"`
 }
 
 // HostedZoneStatus defines the observed state of HostedZone
