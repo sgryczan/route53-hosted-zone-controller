@@ -1,8 +1,62 @@
 # route53-hosted-zone-controller
-// TODO(user): Add simple overview of use/purpose
+This is a simple controller that allows you to manage AWS Hosted Zones as custom resources in your Kubernetes cluster.
+## Examples
+#### Example: Basic hosted zone
 
-## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
+```
+apiVersion: route53.aws.czan.io/v1
+kind: HostedZone
+metadata:
+  name: hostedzone.myexample.com
+spec:
+```
+
+#### Hosted zone that is marked as a delegate of a parent zone
+
+```
+# The roleARN points to a role that the controller should assume to create the delegation in the parent zone
+
+apiVersion: route53.aws.czan.io/v1
+kind: HostedZone
+metadata:
+  name: my.hostedzone.myexample.com
+spec:
+  delegateOf:
+    hostedZoneRef:
+      name: hostedzone.myexample.com
+    roleARN: arn:aws:iam::696758779764:role/route53admin
+```
+
+#### A ZoneID can be specified as well, in the case that the target zone is not managed by this controller:
+
+```
+apiVersion: route53.aws.czan.io/v1
+kind: HostedZone
+metadata:
+  name: myother.hostedzone.myexample.com
+spec:
+  delegateOf:
+    zoneID: ''
+    roleARN: arn:aws:iam::696758779764:role/route53admin
+```
+
+#### ResourceRecord represents an entry in a hosted zone
+
+```
+apiVersion: route53.aws.czan.io/v1
+kind: ResourceRecord
+metadata:
+  name: resourcerecord-sample
+spec:
+  hostedZoneRef:
+    name: my.hostedzone.myexample.com
+  recordSet:
+    name: api.my.hostedzone.myexample.com
+    type: "A"
+    ttl: 300
+    resourceRecords:
+    - value: 10.1.2.3
+```
 
 ## Getting Started
 You’ll need a Kubernetes cluster to run against. You can use [KIND](https://sigs.k8s.io/kind) to get a local cluster for testing, or run against a remote cluster.
